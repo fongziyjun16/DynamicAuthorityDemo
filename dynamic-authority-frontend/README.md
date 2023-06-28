@@ -1,0 +1,1 @@
+`npm start` to start the front end
