@@ -4,6 +4,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import proj.fzy.dynamicauthority.enums.ResourceAuthorizationType;
 import proj.fzy.dynamicauthority.exception.NotFoundException;
 import proj.fzy.dynamicauthority.model.dto.CommonResponse;
 import proj.fzy.dynamicauthority.model.dto.ResourceInfo;
@@ -51,6 +52,14 @@ public class ResourceController {
                 .message("success")
                 .data(resourceService.getAll())
                 .build();
+    }
+
+    @PutMapping(value = "/authorization-type")
+    public CommonResponse<Void> updateAuthorizationType(
+            @RequestParam String method, @RequestParam String path, @RequestParam String authorizationType) {
+        return resourceService.updateAuthorizationType(method, path, ResourceAuthorizationType.valueOf(authorizationType)) ?
+                CommonResponse.simpleResponse(HttpStatus.OK.value(), "success") :
+                CommonResponse.simpleResponse(HttpStatus.BAD_REQUEST.value(), "resource not exist");
     }
 
     @PostMapping(value = "/role", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

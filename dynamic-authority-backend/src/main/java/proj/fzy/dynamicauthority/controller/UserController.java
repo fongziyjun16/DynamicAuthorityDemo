@@ -16,6 +16,8 @@ import proj.fzy.dynamicauthority.model.dto.LoginResponse;
 import proj.fzy.dynamicauthority.model.dto.UserInfo;
 import proj.fzy.dynamicauthority.service.UserService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -81,6 +83,15 @@ public class UserController {
                     .build();
         }
         throw new NotFoundException();
+    }
+
+    @GetMapping("/all")
+    public CommonResponse<List<UserInfo>> getAll() {
+        return CommonResponse.<List<UserInfo>>builder()
+                .code(HttpStatus.OK.value())
+                .message("success")
+                .data(userService.getAll())
+                .build();
     }
 
     @PostMapping(value = "/role", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

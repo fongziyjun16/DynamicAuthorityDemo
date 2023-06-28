@@ -14,6 +14,7 @@ import java.util.List;
 public class ResourceInfo {
     private String method;
     private String path;
+    private String authorizationType;
     private List<String> roleNames;
     private List<String> authorityNames;
 }

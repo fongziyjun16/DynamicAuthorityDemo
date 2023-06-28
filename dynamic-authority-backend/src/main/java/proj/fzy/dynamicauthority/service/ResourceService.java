@@ -1,6 +1,7 @@
 package proj.fzy.dynamicauthority.service;
 
 import org.springframework.stereotype.Service;
+import proj.fzy.dynamicauthority.enums.ResourceAuthorizationType;
 import proj.fzy.dynamicauthority.model.db.Authority;
 import proj.fzy.dynamicauthority.model.db.Resource;
 import proj.fzy.dynamicauthority.model.db.Role;
@@ -42,6 +43,7 @@ public class ResourceService {
             return ResourceInfo.builder()
                     .method(resource.getMethod())
                     .path(resource.getPath())
+                    .authorizationType(resource.getAuthorizationType().name())
                     .authorityNames(resource.getAuthorities().stream().map(Authority::getName).toList())
                     .roleNames(resource.getRoles().stream().map(Role::getName).toList())
                     .build();
@@ -57,6 +59,17 @@ public class ResourceService {
                     .toList();
         }
         return new ArrayList<>();
+    }
+
+    public boolean updateAuthorizationType(String method, String path, ResourceAuthorizationType authorizationType) {
+        Optional<Resource> optionalResource = resourceRepository.findByMethodAndPath(method, path);
+        if (optionalResource.isPresent()) {
+            Resource resource = optionalResource.get();
+            resource.setAuthorizationType(authorizationType);
+            resourceRepository.save(resource);
+            return true;
+        }
+        return false;
     }
 
     public boolean assignAuthority(String method, String path, String authorityName) {

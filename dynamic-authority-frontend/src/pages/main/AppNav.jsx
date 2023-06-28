@@ -39,6 +39,7 @@ const items = [
     ]),
     getItem('Resource', 'resource', null, [
         getItem(<Link href="/main/resource/view">View Resource</Link>, 'viewResource'),
+        getItem(<Link href="/main/resource/update">Update Resource</Link>, 'updateResource'),
         getItem(<Link href="/main/resource/role">Manage Role</Link>, 'resourceManageRoel'),
         getItem(<Link href="/main/resource/authority">Manage Authority</Link>, 'resourceManageAuthority'),
     ]),

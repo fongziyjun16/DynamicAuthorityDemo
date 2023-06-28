@@ -13,6 +13,8 @@ import proj.fzy.dynamicauthority.repository.RoleRepository;
 import proj.fzy.dynamicauthority.repository.UserRepository;
 import proj.fzy.dynamicauthority.untils.JWTUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -80,6 +82,14 @@ public class UserService {
                     .build();
         }
         return null;
+    }
+
+    public List<UserInfo> getAll() {
+        List<User> users = userRepository.findAll();
+        if (users.size() == 0) {
+            return new ArrayList<>();
+        }
+        return users.stream().map(user -> getUserInfo(user.getUsername())).toList();
     }
 
     public boolean addAuthority(String username, String authorityName) {

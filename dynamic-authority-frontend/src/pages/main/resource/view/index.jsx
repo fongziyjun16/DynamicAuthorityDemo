@@ -12,22 +12,17 @@ function ViewResource() {
 
     useEffect(() => {
         axios.get(
-            "/api/resource/endpoints"
+            "/api/resource/all"
         ).then(resp => {
             if (resp.data !== null) {
-                const {data: dbResource} = resp.data
-                const map = new Map(Object.entries(dbResource))
+                const {data: dbResources} = resp.data
                 const r = []
-                map.forEach((paths, method) => {
-                    paths.forEach(path => {
-                        r.push({
-                            key: method + ":" + path,
-                            method: method,
-                            path: path
-                        })
+                dbResources.map(dbResource => {
+                    r.push({
+                        key: dbResource.method + ":" + dbResource.path,
+                        ...dbResource
                     })
                 })
-                // console.log(r)
                 setResources([...r])
             }
         }).catch(err => {
@@ -36,18 +31,8 @@ function ViewResource() {
     }, [])
 
     const requestResourceDetail = (record) => {
-        axios.get(
-            "/api/resource?method=" + record.method + "&path=" + record.path
-        ).then(resp => {
-            if (resp.data !== null) {
-                // console.log(resp.data)
-                const {roleNames, authorityNames} = resp.data.data
-                setRoles([...roleNames])
-                setAuthorities([...authorityNames])
-            }
-        }).catch(err => {
-            console.log(err)
-        })
+        setRoles([...record.roleNames])
+        setAuthorities([...record.authorityNames])
         setIsModalOpen(true)
     }
 
@@ -65,6 +50,11 @@ function ViewResource() {
                             title: 'Path',
                             dataIndex: 'path',
                             key: 'path',
+                        },
+                        {
+                            title: 'Authorization Type',
+                            dataIndex: 'authorizationType',
+                            key: 'authorizationType',
                         },
                         {
                             title: 'Action',
