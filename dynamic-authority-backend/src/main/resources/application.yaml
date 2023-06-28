@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: dynamic_authority
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dynamic_authority?createDatabaseIfNotExist=true
+    username: root
+    password: admin111
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+authorization:
+  white-list:
+    - method: "POST"
+      path: "/user/sign-in"
+    - method: "GET"
+      path: "/user/authenticate"
+jwt:
+  header: "Authorization"
+  prefix: "Bearer "
+  secret-key: "dynamic_authority"
+  duration: 43200 # seconds
