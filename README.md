@@ -2,7 +2,7 @@
 
 For a resource including request method and path, a user having specific roles and authorities can request.
 
-Integrating JWT in the authentication.
+Integrating JWT in the authentication. Authentication and authorization will be done in two interceptors.
 
 A resource with roles and authorities can be visited by users with all these roles and authorities or just have any of them. An attribute of a resource will define this resource requiring all or any.
 
