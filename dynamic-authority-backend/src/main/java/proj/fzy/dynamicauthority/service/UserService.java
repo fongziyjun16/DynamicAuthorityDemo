@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.stereotype.Service;
 import proj.fzy.dynamicauthority.model.db.Authority;
+import proj.fzy.dynamicauthority.model.db.Resource;
 import proj.fzy.dynamicauthority.model.db.Role;
 import proj.fzy.dynamicauthority.model.db.User;
 import proj.fzy.dynamicauthority.model.dto.UserInfo;
@@ -81,18 +82,6 @@ public class UserService {
         return null;
     }
 
-    public boolean addRole(String username, String roleName) {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
-        Optional<Role> optionalRole = roleRepository.findByName(roleName);
-        if (optionalUser.isPresent() && optionalRole.isPresent()) {
-            User dbUser = optionalUser.get();
-            dbUser.getRoles().add(optionalRole.get());
-            userRepository.save(dbUser);
-            return true;
-        }
-        return false;
-    }
-
     public boolean addAuthority(String username, String authorityName) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
         Optional<Authority> optionalAuthority = authorityRepository.findByName(authorityName);
@@ -105,5 +94,40 @@ public class UserService {
         return false;
     }
 
+    public boolean removeAuthority(String username, String authorityName) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        Optional<Authority> optionalAuthority = authorityRepository.findByName(authorityName);
+        if (optionalUser.isPresent() && optionalAuthority.isPresent()) {
+            User user = optionalUser.get();
+            user.getAuthorities().remove(optionalAuthority.get());
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addRole(String username, String roleName) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        Optional<Role> optionalRole = roleRepository.findByName(roleName);
+        if (optionalUser.isPresent() && optionalRole.isPresent()) {
+            User dbUser = optionalUser.get();
+            dbUser.getRoles().add(optionalRole.get());
+            userRepository.save(dbUser);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeRole(String username, String roleName) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        Optional<Role> optionalRole = roleRepository.findByName(roleName);
+        if (optionalUser.isPresent() && optionalRole.isPresent()) {
+            User user = optionalUser.get();
+            user.getRoles().remove(optionalRole.get());
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
 
 }

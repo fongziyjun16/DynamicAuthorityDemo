@@ -90,6 +90,13 @@ public class UserController {
                 CommonResponse.simpleResponse(HttpStatus.BAD_REQUEST.value(), "not exist user or role");
     }
 
+    @DeleteMapping(value = "/role")
+    public CommonResponse<Void> deleteRole(@RequestParam String username, @RequestParam String roleName) {
+        return userService.removeRole(username, roleName) ?
+                CommonResponse.simpleResponse(HttpStatus.OK.value(), "success") :
+                CommonResponse.simpleResponse(HttpStatus.BAD_REQUEST.value(), "not exist user or role");
+    }
+
     @PostMapping(value = "/authority", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public CommonResponse<Void> addAuthority(@RequestParam String username, @RequestParam String authorityName) {
         return userService.addAuthority(username, authorityName) ?
@@ -97,4 +104,10 @@ public class UserController {
                 CommonResponse.simpleResponse(HttpStatus.BAD_REQUEST.value(), "not exist user or authority");
     }
 
+    @DeleteMapping(value = "/authority")
+    public CommonResponse<Void> deleteAuthority(@RequestParam String username, @RequestParam String authorityName) {
+        return userService.removeAuthority(username, authorityName) ?
+                CommonResponse.simpleResponse(HttpStatus.OK.value(), "success") :
+                CommonResponse.simpleResponse(HttpStatus.BAD_REQUEST.value(), "not exist user or authority");
+    }
 }
