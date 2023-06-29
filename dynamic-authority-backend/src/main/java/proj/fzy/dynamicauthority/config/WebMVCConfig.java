@@ -7,6 +7,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import proj.fzy.dynamicauthority.interceptor.AuthorizationInterceptor;
 import proj.fzy.dynamicauthority.interceptor.AuthenticationInterceptor;
 
+import java.util.List;
+
 @Configuration
 @EnableWebMvc
 public class WebMVCConfig implements WebMvcConfigurer {
@@ -21,7 +23,14 @@ public class WebMVCConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authenticationInterceptor);
-        registry.addInterceptor(authorizationInterceptor);
+        List<String> exclude = List.of(
+                "/v3/api-docs/**",
+                "/swagger-ui/**",
+                "/swagger-ui.html"
+        );
+        registry.addInterceptor(authenticationInterceptor)
+                .excludePathPatterns(exclude);
+        registry.addInterceptor(authorizationInterceptor)
+                .excludePathPatterns(exclude);
     }
 }
