@@ -8,7 +8,7 @@ public class TestController {
     @PostMapping
     public void pot() {
     }
-    @GetMapping
+    @DeleteMapping
     public void delete() {
     }
     @PutMapping
