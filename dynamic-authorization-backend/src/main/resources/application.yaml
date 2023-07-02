@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: dynamic-authorization
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dynamic_authorization?createDatabaseIfNotExist=true
+    username: root
+    password: admin111
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+jwt:
+  header: "Authorization"
+  prefix: "Bearer "
+  secret-key: "dynamic_authority"
+  duration: 43200 # seconds

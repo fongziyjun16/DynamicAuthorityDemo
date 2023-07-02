@@ -1,29 +1,25 @@
-# DynamicAuthorityDemo
+# Dynamic Authorization Demo
 
-For a resource including request method and path, a user having specific roles and authorities can request.
+This demo bases on RBAC.
 
-Integrating JWT in the authentication. Authentication and authorization will be done in two interceptors.
+For a resource, it is identified by method and path. Its attribute `auth_type` has 4 value: `PERMIT_ALL`, `JUST_AUTHENTICATION`, `ANY_ROLE`, and `ALL_ROLE`.
 
-A resource with roles and authorities can be visited by users with all these roles and authorities or just have any of them. An attribute of a resource will define this resource requiring all or any.
+For `PERMIT_ALL`, it means this resource can be visited by any requester.
 
-All roles and authorities are tags for users and resources.
+For `JUST_AUTHENTICATION`, it means this resource can be visited by any authenticated requesters.
 
-For example:
+For `ANY_ROLE`, it means this resource can be visited by requesters having a role set that include at least one role from the role set of resource.
 
-There are roles: task, group.
+For `ALL_ROLE`, it means this resource can be visited by requesters having a role set that include all roles from the role set of resource.
 
-There are authorities: create, delete, update, and query.
+A custom annotation `@PermitAll` is defined for convienience in setting resources that permit all request. This annotation will be used before endpoint handler methods in `Controller`. There is an assumption each handler method in `Controller` will have request method declaration.
 
-Role group has the authority to create and delete, but role task does not have any authority.
+This demo integrated with Spring Security for authentication and authorization.
 
-An example user has a role task and group and has an authority query. Tags of this user will be a set of task, create, delete, and query, which means if a role has authorities, its authorities will become tags, but it will not.
+For authentication, there is a JWT filter added into the filter chain.
 
-During verifying whether a user can visit a resource, 
+For authorization, there is a custom authentication manager that retrieve roles of current requester and resource from database and do comparison according to the `auth_type` of resource.
 
-if this resource requires all roles and authorities, the tag set of this user needs to contain all tags from the resource tag set
+Therefore, there is no need to do modification to the Spring Security configuration class since configuring authorities for resources.
 
-if this resource requires any roles and authorities, the tag set of this user needs to contain one of the tags from the resource tag set
-
-There is a front-end portal for testing. The initial account is `default / 123qweasd`.
-
-The ERD is in README.md of the back-end fold.
+The old version is in the folder `_old`. It depends on two interceptors to do authentication and authorization.
